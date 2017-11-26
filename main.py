@@ -8,7 +8,7 @@
 
 import sys
 
-from settings import rounds, increase
+from settings import rounds, init_value, round_increase
 
 from web import get_map_properties, get_property_data
 from properties import url_properties
@@ -36,7 +36,7 @@ def run(url, url_variables):
     # Loop through the rounds
     for x in range(rounds):
         min_bedrooms = min_bedrooms + 1
-        max_amount = increase * (x + 1)
+        max_amount = init_value + (round_increase * x)
 
         # Format the url properties
         internal_url = url_properties(url, url_variables, min_bedrooms, max_amount)
