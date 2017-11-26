@@ -5,13 +5,22 @@ import time
 from selenium import webdriver
 
 
-def start_browser():
-    # Setting webdriver options
-    options = webdriver.ChromeOptions()
-    options.add_argument("--start-maximized")
+set_browser = 'phantom'
 
-    # Starting browser and open url
-    browser = webdriver.Chrome('webdriver/chromedriver.exe', chrome_options=options)
+
+def start_browser():
+    browser = ''
+
+    if set_browser == 'chrome':
+        # Setting webdriver options
+        options = webdriver.ChromeOptions()
+        options.add_argument("--start-maximized")
+
+        # Starting browser and open url
+        browser = webdriver.Chrome('webdriver/chromedriver.exe', chrome_options=options)
+    elif set_browser == 'phantom':
+        browser = webdriver.PhantomJS('webdriver/phantomjs.exe')
+        browser.set_window_size(1080, 1920)
 
     # Return browser
     return browser
@@ -22,7 +31,7 @@ def get_map_properties(url):
     properties_list = []
 
     # Start browser
-    browser = start_browser()
+    browser = start_browser('phantom')
     browser.get(url)
 
     # Wait until website is loaded and open list
@@ -75,7 +84,7 @@ def get_property_data(id):
     url = 'https://www.finn.no/' + id
 
     # Start browser
-    browser = start_browser()
+    browser = start_browser('phantom')
     browser.get(url)
 
     time.sleep(7)

@@ -28,7 +28,7 @@ py -3.5 main.py <map-url>
 
 **Parameters**
 
-```<map-url>``` must be stated as a parameter since it defines which location to extract properties from.
+```<map-url>``` must be stated as a parameter since it defines which location to extract properties from (Make sure that the link is inside "").
 
 **Example**
 ```
