@@ -4,6 +4,7 @@
 def url_properties(url, url_variables, min_bedrooms, max_amount):
     internal_url = url + '?'
 
+    # Setting the max price and min bedrooms
     for x in range(len(url_variables)):
         if x == 0:
             internal_url += url_variables[x]
@@ -16,4 +17,5 @@ def url_properties(url, url_variables, min_bedrooms, max_amount):
         else:
             internal_url += '&' + url_variables[x]
 
+    # Return updated url
     return internal_url
