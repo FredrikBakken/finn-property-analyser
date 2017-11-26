@@ -5,16 +5,24 @@ import time
 from selenium import webdriver
 
 
-def get_map_properties(url):
-    # Property list variable
-    properties_list = []
-
+def start_browser():
     # Setting webdriver options
     options = webdriver.ChromeOptions()
     options.add_argument("--start-maximized")
 
     # Starting browser and open url
     browser = webdriver.Chrome('webdriver/chromedriver.exe', chrome_options=options)
+
+    # Return browser
+    return browser
+
+
+def get_map_properties(url):
+    # Property list variable
+    properties_list = []
+
+    # Start browser
+    browser = start_browser()
     browser.get(url)
 
     # Wait until website is loaded and open list
@@ -27,7 +35,7 @@ def get_map_properties(url):
     element.click()
 
     # Wait until everything is hidden and select map element
-    time.sleep(2)
+    time.sleep(3)
     map_id = browser.find_element_by_id('poiImageMap-1')
 
     # Split map elements
@@ -48,3 +56,33 @@ def get_map_properties(url):
 
     # Return property IDs
     return properties_list
+
+
+def get_property_data(id):
+    # Property variables
+    price = ''
+    primary_area = ''
+    usage_area = ''
+    bedrooms = ''
+    gross_floor_area = ''
+    property_type = ''
+    rooms = ''
+    form_of_ownership = ''
+    land_area = ''
+    built_year = ''
+
+    # Property URL
+    url = 'https://www.finn.no/' + id
+
+    # Start browser
+    browser = start_browser()
+    browser.get(url)
+
+    time.sleep(7)
+
+    #time.sleep(60)
+
+    # Quit browser
+    browser.quit()
+
+    return True

@@ -8,7 +8,7 @@
 
 import sys
 
-from web import get_map_properties
+from web import get_map_properties, get_property_data
 from properties import url_properties
 
 
@@ -28,7 +28,7 @@ def init(arguments):
 # Run
 def run(url, url_variables):
     # Variables
-    rounds = 3
+    rounds = 15
     min_bedrooms = 0
     increase = 1000000
     results = []
@@ -47,6 +47,7 @@ def run(url, url_variables):
 
         # Append results to list
         for y in range(len(properties)):
+            #get_property_data(properties[y])
             result.append(properties[y])
 
         # Append lists to list
@@ -55,14 +56,19 @@ def run(url, url_variables):
     # Print results
     for x in range(len(results)):
         for y in range(len(results[x])):
-            if y == 0:
-                print('\n\nMinimum number of bedrooms: ' + str(results[x][0]) + ', maximum price: ' + str(results[x][1]) + 'kr.')
-            elif y == 1:
+            try:
+                skip = results[x][3]
+
+                if y == 0:
+                    print('\n\nMinimum number of bedrooms: ' + str(results[x][0]) + ', maximum price: ' + str(results[x][1]) + 'kr.')
+                elif y == 1:
+                    pass
+                elif y == 2:
+                    print('Finn.no Map URL: ' + str(results[x][2]))
+                else:
+                    print('https://www.finn.no/' + results[x][y])
+            except:
                 pass
-            elif y == 2:
-                print('Finn.no Map URL: ' + str(results[x][2]))
-            else:
-                print('https://www.finn.no/' + results[x][y])
 
     return True
 
