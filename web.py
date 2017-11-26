@@ -2,10 +2,8 @@
 import re
 import time
 
+from settings import set_browser
 from selenium import webdriver
-
-
-set_browser = 'phantom'
 
 
 def start_browser():
@@ -31,7 +29,7 @@ def get_map_properties(url):
     properties_list = []
 
     # Start browser
-    browser = start_browser('phantom')
+    browser = start_browser()
     browser.get(url)
 
     # Wait until website is loaded and open list
@@ -84,7 +82,7 @@ def get_property_data(id):
     url = 'https://www.finn.no/' + id
 
     # Start browser
-    browser = start_browser('phantom')
+    browser = start_browser()
     browser.get(url)
 
     time.sleep(7)

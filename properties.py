@@ -1,5 +1,7 @@
 
 
+from settings import freeholder
+
 # Setting URL properties
 def url_properties(url, url_variables, min_bedrooms, max_amount):
     internal_url = url + '?'
@@ -16,6 +18,9 @@ def url_properties(url, url_variables, min_bedrooms, max_amount):
             internal_url += '&' + tmp_url_variables
         else:
             internal_url += '&' + url_variables[x]
+
+    if freeholder:
+        internal_url += '&OWNERSHIP_TYPE=3'
 
     # Return updated url
     return internal_url

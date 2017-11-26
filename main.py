@@ -8,6 +8,8 @@
 
 import sys
 
+from settings import rounds, increase
+
 from web import get_map_properties, get_property_data
 from properties import url_properties
 
@@ -28,10 +30,8 @@ def init(arguments):
 # Run
 def run(url, url_variables):
     # Variables
-    rounds = 15
-    min_bedrooms = 0
-    increase = 1000000
     results = []
+    min_bedrooms = 0
 
     # Loop through the rounds
     for x in range(rounds):
