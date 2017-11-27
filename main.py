@@ -53,6 +53,8 @@ def run(url, url_variables):
         # Append lists to list
         results.append(result)
 
+        print('Work in progress ' + str(x + 1) + '/' + str(rounds) + '...')
+
     # Print results
     for x in range(len(results)):
         for y in range(len(results[x])):
