@@ -10,8 +10,9 @@ import sys
 
 from settings import rounds, init_value, round_increase
 
-from web import get_map_properties, get_property_data
+from web import get_map_properties
 from properties import url_properties
+from spreadsheet import get_map, insert_data
 
 
 # Initializing the program by formatting arguments
@@ -30,7 +31,7 @@ def init(arguments):
 # Run
 def run(url, url_variables):
     # Variables
-    results = []
+    result = []                    # Number of bedrooms, max amount, property-url, map-url
     min_bedrooms = 0
 
     # Loop through the rounds
@@ -40,21 +41,28 @@ def run(url, url_variables):
 
         # Format the url properties
         internal_url = url_properties(url, url_variables, min_bedrooms, max_amount)
-        result = [min_bedrooms, max_amount, internal_url]
+        #result = [min_bedrooms, max_amount, internal_url]
 
         # Get properties off finn
         properties = get_map_properties(internal_url)
 
+
+        #result.append(d)
+
         # Append results to list
         for y in range(len(properties)):
-            #get_property_data(properties[y])
-            result.append(properties[y])
+            d = [min_bedrooms, max_amount, 'https://www.finn.no/' + properties[y], internal_url]
+            result.append(d)
 
         # Append lists to list
-        results.append(result)
+        #results.append(result)
 
-        print('Number of hits for ' + str(min_bedrooms) + ' bedroom(s): ' + str(len(properties)) + '.   Work in progress ' + str(x + 1) + '/' + str(rounds) + '...')
+        #print('Number of hits for ' + str(min_bedrooms) + ' bedroom(s): ' + str(len(properties)) + '.   Work in progress ' + str(x + 1) + '/' + str(rounds) + '...')
 
+    #print(result)
+    insert_data(result)
+
+    '''
     # Print results
     for x in range(len(results)):
         for y in range(len(results[x])):
@@ -73,7 +81,7 @@ def run(url, url_variables):
                 pass
 
     return True
-
+    '''
 
 # Handle execution
 if __name__ == "__main__":
