@@ -12,20 +12,28 @@ from settings import rounds, init_value, round_increase
 
 from web import get_map_properties
 from properties import url_properties
-from spreadsheet import get_map, insert_data
+from spreadsheet import get_number_of_sheets, get_map_url, insert_data
 
 
 # Initializing the program by formatting arguments
-def init(arguments):
-    # Get the provided argument
-    argument = arguments[1]
+def initializer():
+    # Get number of sheets
+    number_of_sheets = get_number_of_sheets()
 
-    # Split the url and url variables
-    url = argument.split('?')[0]
-    url_variables = argument.split('?')[1].split('&')
+    # Loop through the sheets
+    for x in range(number_of_sheets):
+        map = get_map_url(x)
 
-    # Execute the program
-    run(url, url_variables)
+        # Split the url and url variables
+        url = map.split('?')[0]
+        url_variables = map.split('?')[1].split('&')
+
+        # Execute the program
+        result = run(url, url_variables)
+
+        insert_data(x, result)
+
+    return True
 
 
 # Run
@@ -59,8 +67,6 @@ def run(url, url_variables):
 
         #print('Number of hits for ' + str(min_bedrooms) + ' bedroom(s): ' + str(len(properties)) + '.   Work in progress ' + str(x + 1) + '/' + str(rounds) + '...')
 
-    #print(result)
-    insert_data(result)
 
     '''
     # Print results
@@ -83,7 +89,9 @@ def run(url, url_variables):
     return True
     '''
 
+    return result
+
 # Handle execution
 if __name__ == "__main__":
     arguments = sys.argv
-    init(arguments)
+    initializer()
