@@ -39,7 +39,7 @@ def initializer():
 # Run
 def run(url, url_variables):
     # Variables
-    result = []                    # Number of bedrooms, max amount, property-url, map-url
+    result = []
     min_bedrooms = 0
 
     # Loop through the rounds
@@ -49,45 +49,16 @@ def run(url, url_variables):
 
         # Format the url properties
         internal_url = url_properties(url, url_variables, min_bedrooms, max_amount)
-        #result = [min_bedrooms, max_amount, internal_url]
 
         # Get properties off finn
         properties = get_map_properties(internal_url)
-
-
-        #result.append(d)
 
         # Append results to list
         for y in range(len(properties)):
             d = [min_bedrooms, max_amount, 'https://www.finn.no/' + properties[y], internal_url]
             result.append(d)
 
-        # Append lists to list
-        #results.append(result)
-
-        #print('Number of hits for ' + str(min_bedrooms) + ' bedroom(s): ' + str(len(properties)) + '.   Work in progress ' + str(x + 1) + '/' + str(rounds) + '...')
-
-
-    '''
-    # Print results
-    for x in range(len(results)):
-        for y in range(len(results[x])):
-            try:
-                skip = results[x][3]
-
-                if y == 0:
-                    print('\n\nMinimum number of bedrooms: ' + str(results[x][0]) + ', maximum price: ' + str(results[x][1]) + 'kr.')
-                elif y == 1:
-                    pass
-                elif y == 2:
-                    print('Finn.no Map URL: ' + str(results[x][2]))
-                else:
-                    print('https://www.finn.no/' + results[x][y])
-            except:
-                pass
-
-    return True
-    '''
+        print('Program progress: ' + str(x + 1) + '/' + str(rounds) + '...')
 
     return result
 
