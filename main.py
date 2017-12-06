@@ -10,7 +10,7 @@ import sys
 
 from settings import rounds, init_value, round_increase
 
-from web import get_map_properties
+from web import get_map_properties, get_property_data
 from properties import url_properties
 
 
@@ -68,7 +68,7 @@ def run(url, url_variables):
                 elif y == 2:
                     print('Finn.no Map URL: ' + str(results[x][2]))
                 else:
-                    print(results[x][y])
+                    print('https://www.finn.no/' + results[x][y])
             except:
                 pass
 
