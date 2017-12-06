@@ -1,7 +1,7 @@
 
 import gspread
 
-from settings import rounds
+from settings import rounds, advanced
 
 from time import strftime
 from oauth2client.service_account import ServiceAccountCredentials
@@ -17,7 +17,22 @@ creds = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', s
 client = gspread.authorize(creds)
 
 # Open the spreadsheet
-open = client.open("finn-property-analyser")
+if advanced:
+    open = client.open("finn-property-analyser-advanced")
+    map1_cell = 'I1'
+    map2_cell = 'J1'
+    upd1_cell = 'I2'
+    upd2_cell = 'J2'
+    rnd1_cell = 'I3'
+    rnd2_cell = 'J3'
+else:
+    open = client.open("finn-property-analyser")
+    map1_cell = 'F1'
+    map2_cell = 'G1'
+    upd1_cell = 'F2'
+    upd2_cell = 'G2'
+    rnd1_cell = 'F3'
+    rnd2_cell = 'G3'
 
 
 # Get total number of sheets
@@ -39,7 +54,7 @@ def get_number_of_sheets():
 # Get map url
 def get_map_url(sheet_number):
     current_sheet = open.get_worksheet(sheet_number)
-    map = current_sheet.acell('G1').value
+    map = current_sheet.acell(map2_cell).value
 
     print('Initializing property extraction for area: ' + current_sheet.title)
 
@@ -59,12 +74,12 @@ def insert_data(sheet_number, data):
     print('All previous entries deleted')
 
     # Get the map url
-    map = current_sheet.acell('G1').value
+    map = current_sheet.acell(map2_cell).value
     print('Current map url: ' + map)
 
     # Delete map and time specific cells
-    current_sheet.update_acell('F1', '')
-    current_sheet.update_acell('G1', '')
+    current_sheet.update_acell(map1_cell, '')
+    current_sheet.update_acell(map2_cell, '')
 
     # Insert all data into sheet
     for x in range(len(data)):
@@ -77,12 +92,12 @@ def insert_data(sheet_number, data):
     upd_time = strftime("%d-%m-%Y %H:%M:%S")
 
     # Re-add map url and time data
-    current_sheet.update_acell('F1', 'Original map')
-    current_sheet.update_acell('G1', map)
-    current_sheet.update_acell('F2', 'Latest update')
-    current_sheet.update_acell('G2', upd_time)
-    current_sheet.update_acell('F3', 'Max rounds')
-    current_sheet.update_acell('G3', rounds)
+    current_sheet.update_acell(map1_cell, 'Original map')
+    current_sheet.update_acell(map2_cell, map)
+    current_sheet.update_acell(upd1_cell, 'Latest update')
+    current_sheet.update_acell(upd2_cell, upd_time)
+    current_sheet.update_acell(rnd1_cell, 'Max rounds')
+    current_sheet.update_acell(rnd2_cell, rounds)
 
     # Increase sheet variable by 1
     i += 1

@@ -10,3 +10,6 @@ freeholder = True           # Selveier
 
 ### Web file variables
 set_browser = 'phantom'     # Options are: 'chrome' or 'phantom'
+
+### Spreadsheet file variables
+advanced = False            # Basic or advanced

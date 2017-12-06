@@ -3,9 +3,9 @@ import sys
 import time
 import schedule
 
-from settings import rounds, init_value, round_increase
+from settings import rounds, init_value, round_increase, advanced
 
-from web import get_map_properties
+from web import get_map_properties, get_advanced_map_properties
 from properties import url_properties
 from spreadsheet import get_number_of_sheets, get_map_url, insert_data
 
@@ -59,12 +59,20 @@ def run(url, url_variables):
         internal_url = url_properties(url, url_variables, min_bedrooms, max_amount)
 
         # Get properties off finn
-        properties = get_map_properties(internal_url)
+        if advanced:
+            properties = get_advanced_map_properties(internal_url)
 
-        # Append results to list
-        for y in range(len(properties)):
-            d = [min_bedrooms, max_amount, 'https://www.finn.no/' + properties[y], internal_url]
-            result.append(d)
+            # Append results to list
+            for y in range(len(properties)):
+                d = [properties[y][4], properties[y][5], properties[y][1], properties[y][2], properties[y][3], properties[y][0], internal_url]
+                result.append(d)
+        else:
+            properties = get_map_properties(internal_url)
+
+            # Append results to list
+            for y in range(len(properties)):
+                d = [min_bedrooms, max_amount, 'https://www.finn.no/' + properties[y], internal_url]
+                result.append(d)
 
         # Printing status
         print('Current map progress: ' + str(x + 1) + '/' + str(rounds) + '...')
@@ -76,7 +84,8 @@ def run(url, url_variables):
 # Handle execution
 if __name__ == "__main__":
     argument = sys.argv
-    if argument[1] == 'auto':
-        scheduler()
-    else:
+    try:
+        if argument[1] == 'auto':
+            scheduler()
+    except:
         initializer()
