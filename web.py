@@ -97,15 +97,14 @@ def get_advanced_map_properties(url):
         property_id = ''
         map_slide_pages = ''
         number_of_slides = 0
-        result = re.search('id="(.*)" class', map_elements[x]) # poi_
+        result = re.search('id="(.*)" class', map_elements[x])
 
         if result != None:
             finn_id = result.group(1)
             property_id = finn_id.replace('poi_', '')
 
             try:
-                map_property = browser.find_element_by_xpath('//*[@id="' + finn_id + '"]')
-                map_property.click()
+                browser.execute_script('document.getElementById("poi_' + property_id + '").click()')
                 time.sleep(3)
             except:
                 print('Issues while trying get all property data. Please see the map for unlisted properties.')
@@ -190,11 +189,12 @@ def get_property_details(browser, property_id, close):
     except:
         pass
 
-    # Close the map property window
+    time.sleep(1)
+
     if close:
+        # Close the map property window
         try:
-            map_property_close = browser.find_element_by_id(property_id + 'iadPopup_close')
-            map_property_close.click()
+            browser.execute_script('document.querySelectorAll(".olPopupCloseBox")[0].click()')
             time.sleep(2)
         except:
             pass
