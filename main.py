@@ -1,10 +1,25 @@
 
+import sys
+import time
+import schedule
+
 from settings import rounds, init_value, round_increase
 
 from web import get_map_properties
 from properties import url_properties
 from spreadsheet import get_number_of_sheets, get_map_url, insert_data
 
+
+# Schedule for automatic updates
+def scheduler():
+    schedule.every().day.at("09:00").do(initializer)
+    schedule.every().day.at("12:00").do(initializer)
+    schedule.every().day.at("15:00").do(initializer)
+    schedule.every().day.at("18:00").do(initializer)
+
+    while True:
+        schedule.run_pending()
+        time.sleep(30)
 
 # Initializing the program by formatting arguments
 def initializer():
@@ -60,4 +75,8 @@ def run(url, url_variables):
 
 # Handle execution
 if __name__ == "__main__":
-    initializer()
+    argument = sys.argv
+    if argument[1] == 'auto':
+        scheduler()
+    else:
+        initializer()
