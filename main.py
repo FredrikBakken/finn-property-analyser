@@ -1,13 +1,4 @@
 
-### Main file
-
-### Important note: URL in argument has to be within "". E.g.: "www.url.com"
-
-### Run example:
-### py -3.5 main.py "https://kart.finn.no/?lng=10.93332&lat=63.47365&tab=iad&zoom=14&mapType=normap&activetab=iad&searchKey=search_id_realestate_homes&keyword=&PRICE_FROM=&PRICE_TO=&ESTATE_SIZE%2FLIVING_AREA_FROM=&ESTATE_SIZE%2FLIVING_AREA_TO=&PLOT%2FAREARANGE_FROM=&PLOT%2FAREARANGE_TO=&NUMBER_OF_BEDROOMS_FROM=&NUMBER_OF_BEDROOMS_TO=&CONSTRUCTION_YEAR_FROM=&CONSTRUCTION_YEAR_TO=&ISNEWPROPERTY=&periode=&metro_distance_TO=&tram_distance_TO=&bus_distance_TO=&train_distance_TO=&orgId="
-
-import sys
-
 from settings import rounds, init_value, round_increase
 
 from web import get_map_properties
@@ -24,14 +15,16 @@ def initializer():
     for x in range(number_of_sheets):
         map = get_map_url(x)
 
-        # Split the url and url variables
-        url = map.split('?')[0]
-        url_variables = map.split('?')[1].split('&')
+        if not map == '':
+            # Split the url and url variables
+            url = map.split('?')[0]
+            url_variables = map.split('?')[1].split('&')
 
-        # Execute the program
-        result = run(url, url_variables)
+            # Execute the program
+            result = run(url, url_variables)
 
-        insert_data(x, result)
+            # Insert data into the sheet
+            insert_data(x, result)
 
     return True
 
@@ -58,11 +51,13 @@ def run(url, url_variables):
             d = [min_bedrooms, max_amount, 'https://www.finn.no/' + properties[y], internal_url]
             result.append(d)
 
-        print('Program progress: ' + str(x + 1) + '/' + str(rounds) + '...')
+        # Printing status
+        print('Current map progress: ' + str(x + 1) + '/' + str(rounds) + '...')
 
+    # Return properties found for current map
     return result
+
 
 # Handle execution
 if __name__ == "__main__":
-    arguments = sys.argv
     initializer()

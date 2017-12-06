@@ -1,8 +1,12 @@
+
 import gspread
 
+from settings import rounds
+
+from time import strftime
 from oauth2client.service_account import ServiceAccountCredentials
 
-# Good tutorial and documentation
+# Tutorial and documentation for later
 # https://www.youtube.com/watch?v=vISRn5qFrkM
 # https://media.readthedocs.org/pdf/gspread/latest/gspread.pdf
 
@@ -37,6 +41,8 @@ def get_map_url(sheet_number):
     current_sheet = open.get_worksheet(sheet_number)
     map = current_sheet.acell('G1').value
 
+    print('Initializing property extraction for area: ' + current_sheet.title)
+
     return map
 
 
@@ -46,7 +52,6 @@ def insert_data(sheet_number, data):
 
     # Get current sheet
     current_sheet = open.get_worksheet(sheet_number)
-
     print('Opening sheet named: ' + current_sheet.title)
 
     # Delete existing data
@@ -57,7 +62,7 @@ def insert_data(sheet_number, data):
     map = current_sheet.acell('G1').value
     print('Current map url: ' + map)
 
-    # Delete map specific cells
+    # Delete map and time specific cells
     current_sheet.update_acell('F1', '')
     current_sheet.update_acell('G1', '')
 
@@ -68,9 +73,16 @@ def insert_data(sheet_number, data):
     # Get all records in current sheet
     rec = current_sheet.get_all_records()
 
-    # Re-add map url data
-    current_sheet.update_acell('F1', 'MAP URL')
+    # Get current time
+    upd_time = strftime("%d-%m-%Y %H:%M:%S")
+
+    # Re-add map url and time data
+    current_sheet.update_acell('F1', 'Original map')
     current_sheet.update_acell('G1', map)
+    current_sheet.update_acell('F2', 'Latest update')
+    current_sheet.update_acell('G2', upd_time)
+    current_sheet.update_acell('F3', 'Max rounds')
+    current_sheet.update_acell('G3', rounds)
 
     # Increase sheet variable by 1
     i += 1
