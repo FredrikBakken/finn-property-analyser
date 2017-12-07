@@ -38,8 +38,11 @@ def initializer():
             # Execute the program
             result = run(url, url_variables)
 
+            # Sorting results (x[0] = bedrooms || x[1] = price)
+            sorted_result = sorted(result, key=lambda x: x[1], reverse=False)
+
             # Insert data into the sheet
-            insert_data(x, result)
+            insert_data(x, sorted_result)
 
     return True
 
