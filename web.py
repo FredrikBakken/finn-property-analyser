@@ -9,7 +9,7 @@ from selenium import webdriver
 def start_browser():
     browser = ''
 
-    if set_browser == 'chrome' or advanced:
+    if set_browser == 'chrome':
         # Setting webdriver options
         options = webdriver.ChromeOptions()
         options.add_argument("--start-maximized")
