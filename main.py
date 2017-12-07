@@ -38,7 +38,7 @@ def initializer():
             # Execute the program
             result = run(url, url_variables)
 
-            # Sorting results (x[0] = bedrooms || x[1] = price)
+            # Sorting results (x[0] = bedrooms || x[1] = price || x[2] = price/bedroom || x[3] = areal)
             sorted_result = sorted(result, key=lambda x: x[1], reverse=False)
 
             # Insert data into the sheet
@@ -68,9 +68,10 @@ def run(url, url_variables):
             # Append results to list
             for y in range(len(properties)):
                 exist = False
-                d = [properties[y][4], properties[y][5], properties[y][1], properties[y][2], properties[y][3], properties[y][0], internal_url]
+                price_per_bedroom = int(properties[y][5]) / int(properties[y][4])
+                d = [properties[y][4], properties[y][5], str(price_per_bedroom), properties[y][1], properties[y][2], properties[y][3], properties[y][0], internal_url]
                 for z in range(len(result)):
-                    if result[z][0:5] == d[0:5]:
+                    if result[z][0:6] == d[0:6]:
                         exist = True
 
                 if not exist:

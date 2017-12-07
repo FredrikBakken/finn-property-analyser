@@ -19,12 +19,12 @@ client = gspread.authorize(creds)
 # Open the spreadsheet
 if advanced:
     open = client.open("finn-property-analyser-advanced")
-    map1_cell = 'I1'
-    map2_cell = 'J1'
-    upd1_cell = 'I2'
-    upd2_cell = 'J2'
-    rnd1_cell = 'I3'
-    rnd2_cell = 'J3'
+    map1_cell = 'J1'
+    map2_cell = 'K1'
+    upd1_cell = 'J2'
+    upd2_cell = 'K2'
+    rnd1_cell = 'J3'
+    rnd2_cell = 'K3'
 else:
     open = client.open("finn-property-analyser")
     map1_cell = 'F1'
