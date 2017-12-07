@@ -64,8 +64,16 @@ def run(url, url_variables):
 
             # Append results to list
             for y in range(len(properties)):
+                exist = False
                 d = [properties[y][4], properties[y][5], properties[y][1], properties[y][2], properties[y][3], properties[y][0], internal_url]
-                result.append(d)
+                for z in range(len(result)):
+                    if result[z][0:5] == d[0:5]:
+                        exist = True
+
+                if not exist:
+                    result.append(d)
+                else:
+                    print('This property is already included in the result list.')
         else:
             properties = get_map_properties(internal_url)
 
