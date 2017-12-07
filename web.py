@@ -30,6 +30,7 @@ def get_map_properties(url):
 
     # Start browser
     browser = start_browser()
+    time.sleep(2)
     browser.get(url)
 
     # Wait until website is loaded and open list
@@ -200,13 +201,16 @@ def get_property_details(browser, property_id, close):
             pass
 
     # Append all results to data list
-    complete_property_data_list.append(property_link)
-    complete_property_data_list.append(property_size)
-    complete_property_data_list.append(property_type)
-    complete_property_data_list.append(property_ownership)
-    complete_property_data_list.append(property_bedrooms)
-    complete_property_data_list.append(property_price)
+    if property_price.isdigit():
+        complete_property_data_list.append(property_link)
+        complete_property_data_list.append(property_size)
+        complete_property_data_list.append(property_type)
+        complete_property_data_list.append(property_ownership)
+        complete_property_data_list.append(property_bedrooms)
+        complete_property_data_list.append(property_price)
 
-    # Return data list
-    return complete_property_data_list
+        # Return data list
+        return complete_property_data_list
+    else:
+        return ['']
 ####
