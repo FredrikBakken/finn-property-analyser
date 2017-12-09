@@ -2,7 +2,7 @@
 import re
 import time
 
-from settings import set_browser, advanced
+from settings import set_browser
 from selenium import webdriver
 
 

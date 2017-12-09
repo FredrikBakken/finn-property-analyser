@@ -40,6 +40,9 @@ def get_number_of_sheets():
     # Counter variable
     counter = 0
 
+    # Login to make sure the token is refreshed
+    client.login()
+
     while True:
         # Get current sheet
         current_sheet = open.get_worksheet(counter)
@@ -53,6 +56,9 @@ def get_number_of_sheets():
 
 # Get map url
 def get_map_url(sheet_number):
+    # Login to make sure the token is refreshed
+    client.login()
+
     current_sheet = open.get_worksheet(sheet_number)
     map = current_sheet.acell(map2_cell).value
 
