@@ -36,6 +36,6 @@ py -3.5 main.py
 py -3.5 main.py auto
 ```
 
-## Property Results Sheets
+## Property Result Sheets
 
 Please contact me if you want access to the results; fredrik.bakken(at)gmail.com.
