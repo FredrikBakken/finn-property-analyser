@@ -71,6 +71,9 @@ def insert_data(sheet_number, data):
     # Variables
     i = 0
 
+    # Login to make sure the token is refreshed
+    client.login()
+
     # Get current sheet
     current_sheet = open.get_worksheet(sheet_number)
     print('Opening sheet named: ' + current_sheet.title)
