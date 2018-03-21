@@ -13,9 +13,8 @@ from spreadsheet import get_number_of_sheets, get_map_url, insert_data
 # Schedule for automatic updates
 def scheduler():
     schedule.every().day.at("09:00").do(initializer)
-    schedule.every().day.at("12:00").do(initializer)
     schedule.every().day.at("15:00").do(initializer)
-    schedule.every().day.at("18:00").do(initializer)
+    schedule.every().day.at("21:00").do(initializer)
 
     while True:
         schedule.run_pending()
@@ -38,7 +37,7 @@ def initializer():
             # Execute the program
             result = run(url, url_variables)
 
-            # Sorting results (x[0] = bedrooms || x[1] = price || x[2] = price/bedroom || x[3] = areal)
+            # Sorting results (x[0] = bedrooms || x[1] = price || x[2] = price/bedroom || x[3] = m2)
             sorted_result = sorted(result, key=lambda x: x[1], reverse=False)
 
             # Insert data into the sheet
@@ -55,6 +54,11 @@ def run(url, url_variables):
 
     # Loop through the rounds
     for x in range(rounds):
+        # Variables for issue handling
+        issue_counter = 0
+        extract_properties_issues = True
+        
+        # Variables for iterating number of bedrooms and cost
         min_bedrooms = min_bedrooms + 1
         max_amount = init_value + (round_increase * x)
 
@@ -63,7 +67,14 @@ def run(url, url_variables):
 
         # Get properties off finn
         if advanced:
-            properties = get_advanced_map_properties(internal_url)
+            # Issue handling loop for property extraction
+            while extract_properties_issues and issue_counter < 3:
+                try:
+                    properties = get_advanced_map_properties(internal_url)
+                    extract_properties_issues = False
+                except:
+                    issue_counter += 1
+                    print('There were issues during property extraction. Trying again...')
 
             # Append results to list
             for y in range(len(properties)):
@@ -79,7 +90,13 @@ def run(url, url_variables):
                 else:
                     print('This property is already included in the result list.')
         else:
-            properties = get_map_properties(internal_url)
+            # Issue handling loop for property extraction
+            while extract_properties_issues and issue_counter < 3:
+                try:
+                    properties = get_map_properties(internal_url)
+                except:
+                    issue_counter += 1
+                    print('There were issues during property extraction. Trying again...')
 
             # Append results to list
             for y in range(len(properties)):
