@@ -68,45 +68,48 @@ def get_map_url(sheet_number):
 
 
 def insert_data(sheet_number, data):
-    # Variables
-    i = 0
+    try:
+        # Variables
+        i = 0
 
-    # Login to make sure the token is refreshed
-    client.login()
+        # Login to make sure the token is refreshed
+        client.login()
 
-    # Get current sheet
-    current_sheet = open.get_worksheet(sheet_number)
-    print('Opening sheet named: ' + current_sheet.title)
+        # Get current sheet
+        current_sheet = open.get_worksheet(sheet_number)
+        print('Opening sheet named: ' + current_sheet.title)
 
-    # Delete existing data
-    r = current_sheet.resize(rows=1)
-    print('All previous entries deleted')
+        # Delete existing data
+        r = current_sheet.resize(rows=1)
+        print('All previous entries deleted')
 
-    # Get the map url
-    map = current_sheet.acell(map2_cell).value
-    print('Current map url: ' + map)
+        # Get the map url
+        map = current_sheet.acell(map2_cell).value
+        print('Current map url: ' + map)
 
-    # Delete map and time specific cells
-    current_sheet.update_acell(map1_cell, '')
-    current_sheet.update_acell(map2_cell, '')
+        # Delete map and time specific cells
+        current_sheet.update_acell(map1_cell, '')
+        current_sheet.update_acell(map2_cell, '')
 
-    # Insert all data into sheet
-    for x in range(len(data)):
-        current_sheet.insert_row(data[x], 2)
+        # Insert all data into sheet
+        for x in range(len(data)):
+            current_sheet.insert_row(data[x], 2)
 
-    # Get all records in current sheet
-    rec = current_sheet.get_all_records()
+        # Get all records in current sheet
+        rec = current_sheet.get_all_records()
 
-    # Get current time
-    upd_time = strftime("%d-%m-%Y %H:%M:%S")
+        # Get current time
+        upd_time = strftime("%d-%m-%Y %H:%M:%S")
 
-    # Re-add map url and time data
-    current_sheet.update_acell(map1_cell, 'Original map')
-    current_sheet.update_acell(map2_cell, map)
-    current_sheet.update_acell(upd1_cell, 'Latest update')
-    current_sheet.update_acell(upd2_cell, upd_time)
-    current_sheet.update_acell(rnd1_cell, 'Max rounds')
-    current_sheet.update_acell(rnd2_cell, rounds)
+        # Re-add map url and time data
+        current_sheet.update_acell(map1_cell, 'Original map')
+        current_sheet.update_acell(map2_cell, map)
+        current_sheet.update_acell(upd1_cell, 'Latest update')
+        current_sheet.update_acell(upd2_cell, upd_time)
+        current_sheet.update_acell(rnd1_cell, 'Max rounds')
+        current_sheet.update_acell(rnd2_cell, rounds)
 
-    # Increase sheet variable by 1
-    i += 1
+        # Increase sheet variable by 1
+        i += 1
+    except:
+        print('ISSUE: Inserting data into spreadsheet.')

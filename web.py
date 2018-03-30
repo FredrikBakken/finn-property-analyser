@@ -134,7 +134,7 @@ def get_advanced_map_properties(url):
                 try:
                     browser.execute_script('document.querySelectorAll(".navigation.next-ad")[0].click()')
                 except:
-                    pass
+                    print('ISSUE: Trying to select property add.')
 
                 time.sleep(3)
 
@@ -164,7 +164,7 @@ def get_property_details(browser, property_id, close):
             '//*[@id="' + property_id + 'iadPopup_contentDiv"]/div/div/div/div[2]/span[1]/a').get_attribute(
             'href')
     except:
-        pass
+        print('ISSUE: Trying to get property title.')
 
     time.sleep(1)
 
@@ -178,7 +178,7 @@ def get_property_details(browser, property_id, close):
         property_ownership = property_data[2] + ' ' + property_data[3]
         property_bedrooms = property_data[4]
     except:
-        pass
+        print('ISSUE: Trying to get property data.')
 
     time.sleep(1)
 
@@ -188,7 +188,7 @@ def get_property_details(browser, property_id, close):
             '//*[@id="' + property_id + 'iadPopup_contentDiv"]/div/div/div/div[2]/span[4]').text.replace(
             'Prisantydning:  ', '').replace('NOK', '').replace(' ', '')[:-2]
     except:
-        pass
+        print('ISSUE: Trying to get property price.')
 
     time.sleep(1)
 
@@ -198,7 +198,7 @@ def get_property_details(browser, property_id, close):
             browser.execute_script('document.querySelectorAll(".olPopupCloseBox")[0].click()')
             time.sleep(2)
         except:
-            pass
+            print('ISSUE: Trying to close map property window.')
 
     # Append all results to data list
     if property_price.isdigit():
