@@ -87,10 +87,6 @@ def insert_data(sheet_number, data):
         map = current_sheet.acell(map2_cell).value
         print('Current map url: ' + map)
 
-        # Delete map and time specific cells
-        current_sheet.update_acell(map1_cell, '')
-        current_sheet.update_acell(map2_cell, '')
-
         # Insert all data into sheet
         for x in range(len(data)):
             current_sheet.insert_row(data[x], 2)
@@ -102,8 +98,6 @@ def insert_data(sheet_number, data):
         upd_time = strftime("%d-%m-%Y %H:%M:%S")
 
         # Re-add map url and time data
-        current_sheet.update_acell(map1_cell, 'Original map')
-        current_sheet.update_acell(map2_cell, map)
         current_sheet.update_acell(upd1_cell, 'Latest update')
         current_sheet.update_acell(upd2_cell, upd_time)
         current_sheet.update_acell(rnd1_cell, 'Max rounds')
