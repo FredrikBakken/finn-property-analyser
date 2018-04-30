@@ -1,4 +1,3 @@
-
 import gspread
 
 from settings import rounds, advanced
@@ -37,21 +36,21 @@ else:
 
 # Get total number of sheets
 def get_number_of_sheets():
-    # Counter variable
-    counter = 0
+    num_sheets = 0
 
     # Login to make sure the token is refreshed
     client.login()
 
     while True:
-        # Get current sheet
-        current_sheet = open.get_worksheet(counter)
+        # Get current worksheet
+        current_sheet = open.get_worksheet(num_sheets)
+        
+        # Check if sheet exists
         if current_sheet == None:
-            break
-
-        counter += 1
-
-    return counter
+            return num_sheets
+        
+        # Add to counter
+        num_sheets += 1
 
 
 # Get map url
@@ -60,18 +59,15 @@ def get_map_url(sheet_number):
     client.login()
 
     current_sheet = open.get_worksheet(sheet_number)
-    map = current_sheet.acell(map2_cell).value
+    current_map = current_sheet.acell(map2_cell).value
 
     print('Initializing property extraction for area: ' + current_sheet.title)
+    return current_map
 
-    return map
 
-
+# Insert extracted properties into spreadsheet
 def insert_data(sheet_number, data):
     try:
-        # Variables
-        i = 0
-
         # Login to make sure the token is refreshed
         client.login()
 
@@ -81,18 +77,15 @@ def insert_data(sheet_number, data):
 
         # Delete existing data
         r = current_sheet.resize(rows=1)
-        print('All previous entries deleted')
+        print('All previous entries deleted!')
 
         # Get the map url
-        map = current_sheet.acell(map2_cell).value
-        print('Current map url: ' + map)
+        current_map = current_sheet.acell(map2_cell).value
+        print('Current map url: ' + current_map)
 
         # Insert all data into sheet
         for x in range(len(data)):
             current_sheet.insert_row(data[x], 2)
-
-        # Get all records in current sheet
-        rec = current_sheet.get_all_records()
 
         # Get current time
         upd_time = strftime("%d-%m-%Y %H:%M:%S")
@@ -102,8 +95,5 @@ def insert_data(sheet_number, data):
         current_sheet.update_acell(upd2_cell, upd_time)
         current_sheet.update_acell(rnd1_cell, 'Max rounds')
         current_sheet.update_acell(rnd2_cell, rounds)
-
-        # Increase sheet variable by 1
-        i += 1
     except:
         print('ISSUE: Inserting data into spreadsheet.')

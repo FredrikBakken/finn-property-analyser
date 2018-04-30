@@ -1,4 +1,3 @@
-
 import sys
 import time
 import schedule
@@ -18,7 +17,8 @@ def scheduler():
 
     while True:
         schedule.run_pending()
-        time.sleep(30)
+        time.sleep(45)
+
 
 # Initializing the program by formatting arguments
 def initializer():
@@ -27,12 +27,12 @@ def initializer():
 
     # Loop through the sheets
     for x in range(number_of_sheets):
-        map = get_map_url(x)
+        current_map = get_map_url(x)
 
-        if not map == '':
+        if not current_map == '':
             # Split the url and url variables
-            url = map.split('?')[0]
-            url_variables = map.split('?')[1].split('&')
+            url = current_map.split('?')[0]
+            url_variables = current_map.split('?')[1].split('&')
 
             # Execute the program
             result = run(url, url_variables)
@@ -42,8 +42,6 @@ def initializer():
 
             # Insert data into the sheet
             insert_data(x, sorted_result)
-
-    return True
 
 
 # Run

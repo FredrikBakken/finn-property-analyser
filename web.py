@@ -1,27 +1,26 @@
-
 import re
+import sys
 import time
 
 from settings import set_browser
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
+# Start browser driver
 def start_browser():
-    browser = ''
-
     if set_browser == 'chrome':
-        # Setting webdriver options
         options = webdriver.ChromeOptions()
         options.add_argument("--start-maximized")
-
-        # Starting browser and open url
         browser = webdriver.Chrome('webdriver/chromedriver.exe', chrome_options=options)
     elif set_browser == 'phantom':
         browser = webdriver.PhantomJS('webdriver/phantomjs.exe')
         browser.set_window_size(1080, 1920)
 
-    # Return browser
     return browser
+
 
 #### BASIC
 def get_map_properties(url):
@@ -72,25 +71,41 @@ def get_advanced_map_properties(url):
     # Property list variable
     properties_list = []
 
-    # Start browser
-    browser = start_browser()
-    browser.get(url)
+    # Found elements
+    map_elements = ''
 
-    # Wait until website is loaded and open list
-    time.sleep(7)
-    browser.execute_script("document.getElementById('map-poi-categories').style.display = 'block';")
+    # Variables for issue handling
+    issue_counter = 0
+    extract_properties_issues = True
 
-    # Wait until list is open and select 'hide all'
-    time.sleep(1)
-    element = browser.find_element_by_xpath('//*[@id="map-poi-categories"]/div/ul/li[2]')
-    element.click()
+    while extract_properties_issues and issue_counter < 3:
+        try:
+            # Start browser
+            browser = start_browser()
+            browser.get(url)
 
-    # Wait until everything is hidden and select map element
-    time.sleep(3)
-    map_id = browser.find_element_by_id('poiImageMap-1')
+            # Wait until website is loaded and open list
+            time.sleep(15)
+            browser.execute_script("document.getElementById('map-poi-categories').style.display = 'block';")
 
-    # Split map elements
-    map_elements = map_id.get_attribute('innerHTML').split('><')
+            # Wait until list is open and select 'hide all'
+            time.sleep(5)
+            element = browser.find_element_by_xpath('//*[@id="map-poi-categories"]/div/ul/li[2]')
+            element.click()
+
+            # Wait until everything is hidden and select map element
+            time.sleep(8)
+            map_id = browser.find_element_by_id('poiImageMap-1')
+
+            # Split map elements
+            map_elements = map_id.get_attribute('innerHTML').split('><')
+            extract_properties_issues = False
+        except:
+            browser.quit()
+            issue_counter += 1
+            print('Issues while starting browser.')
+            time.sleep(3)
+
 
     # Get finn property IDs
     for x in range(len(map_elements)):
@@ -166,7 +181,7 @@ def get_property_details(browser, property_id, close):
     except:
         print('ISSUE: Trying to get property title.')
 
-    time.sleep(1)
+    time.sleep(2)
 
     # Get property data (size, type, ownership, bedrooms)
     try:
@@ -180,7 +195,7 @@ def get_property_details(browser, property_id, close):
     except:
         print('ISSUE: Trying to get property data.')
 
-    time.sleep(1)
+    time.sleep(2)
 
     # Get property price
     try:
@@ -190,7 +205,7 @@ def get_property_details(browser, property_id, close):
     except:
         print('ISSUE: Trying to get property price.')
 
-    time.sleep(1)
+    time.sleep(2)
 
     if close:
         # Close the map property window
